@@ -8,7 +8,7 @@ email the author, tutorial slack channel) and corrections, thank you!
 
 * Clone this repository and `cd` into it:
 
-```
+```bash
 $ git clone git@github.com:kwmsmith/scipy-2017-cython-tutorial.git
 $ cd scipy-2017-cython-tutorial
 ```
@@ -16,7 +16,7 @@ $ cd scipy-2017-cython-tutorial
 * If you've cloned earlier, `git pull` on the `master` branch to ensure you
 have the latest updates:
 
-```
+```bash
 $ git pull
 ```
 
@@ -33,11 +33,15 @@ instructor.
 * [Install Docker](https://www.docker.com/community-edition) for your OS.
 * Mac / Linux: Open up a terminal and execute
 
-    $ ./launch-container.sh
+```bash
+$ ./launch-container.sh
+```
 
 * Windows: Open up a powershell and run
 
-    $ launch-container.bat 
+```bash
+$ launch-container.bat 
+```
 
 This will download an run the [Jupyter scipy
 notebook](https://hub.docker.com/r/jupyter/scipy-notebook/) docker image, and
@@ -70,7 +74,7 @@ docker-based installation above.
 installed; if not, do so for your version of Mac OS.  Check your install by
 running the following from the commandline:
 
-```
+```bash
 $  gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
 Apple LLVM version 8.0.0 (clang-800.0.42.1)
@@ -84,7 +88,7 @@ InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 * Ensure you have the packages necessary for `gcc` and related headers for your
 distribution.  Check that you have a recent version of `gcc` installed:
 
-```
+```bash
 $  gcc --version
 ```
 
@@ -101,12 +105,16 @@ NOTE: untested -- please provide feedback!
 * Create a `cython-tutorial` environment for this tutorial, using the
 `requirements_conda.txt` file provided:
 
-    $ conda create --yes -n cython-tutorial --file ./requirements_conda.txt
-    $ source activate cython-tutorial
+```bash
+$ conda create --yes -n cython-tutorial --file ./requirements_conda.txt
+$ source activate cython-tutorial
+```
 
 * Launch a jupyter notebook server
 
-    $ jupyter notebook
+```bash
+$ jupyter notebook
+```
 
 * Open the `test-setup` notebook and run all cells.  All should execute without
 error or exception.
