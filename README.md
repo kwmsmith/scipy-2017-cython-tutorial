@@ -32,8 +32,11 @@ instructor.
 
 * [Install Docker](https://www.docker.com/community-edition) for your OS.
 * Mac / Linux: Open up a terminal and execute
+
     $ ./launch-container.sh
+
 * Windows: Open up a powershell and run
+
     $ launch-container.bat 
 
 This will download an run the [Jupyter scipy
@@ -97,10 +100,12 @@ NOTE: untested -- please provide feedback!
 
 * Create a `cython-tutorial` environment for this tutorial, using the
 `requirements_conda.txt` file provided:
+
     $ conda create --yes -n cython-tutorial --file ./requirements_conda.txt
     $ source activate cython-tutorial
 
 * Launch a jupyter notebook server
+
     $ jupyter notebook
 
 * Open the `test-setup` notebook and run all cells.  All should execute without
