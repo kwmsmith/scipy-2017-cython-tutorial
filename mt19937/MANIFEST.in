@@ -1,0 +1,14 @@
+recursive-include srs *.c *.h *.pxi *.pxd *.pyx *.in
+recursive-include srs/tests *.csv
+include *.md
+exclude srs/entropy.c
+exclude srs/dsfmt*
+exclude srs/mt19937*
+exclude srs/mlfg_1279_861*
+exclude srs/pcg32*
+exclude srs/pcg64*
+exclude srs/xorshift128*
+exclude srs/xorshift1024*
+
+include versioneer.py
+include srs/_version.py
