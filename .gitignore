@@ -2,3 +2,7 @@ build/
 *.so
 .ipynb_checkpoints/
 ng-numpy-randomstate/
+.ipython/
+.local/
+__pycache__/
+xtension/foo.c
