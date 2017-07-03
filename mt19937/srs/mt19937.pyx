@@ -1,5 +1,5 @@
-#!python
 #cython: wraparound=False, nonecheck=False, boundscheck=False, cdivision=True
+cimport cython
 import sys
 import operator
 import warnings
@@ -7,29 +7,36 @@ try:
     from threading import Lock
 except:
     from dummy_threading import Lock
-
 import numpy as np
-cimport numpy as np
-cimport cython
-
-from libc cimport string
-from libc.stdint cimport (uint8_t, uint16_t, uint32_t, uint64_t,
-                          int8_t, int16_t, int32_t, int64_t, intptr_t)
-from libc.stdlib cimport malloc, free
-from libc.math cimport sqrt
-from cpython cimport Py_INCREF, PyComplex_FromDoubles
-
 import srs
-from binomial cimport binomial_t
-from cython_overrides cimport PyFloat_AsDouble, PyInt_AsLong, PyComplex_RealAsDouble, PyComplex_ImagAsDouble
+
+from distributions cimport *
+include "rk_state_len.pxi"
 
 np.import_array()
 
-include "interface/random-kit/random-kit.pxi"
+cdef object _get_state(aug_state state):
+    cdef uint32_t [:] key = np.zeros(RK_STATE_LEN, dtype=np.uint32)
+    cdef Py_ssize_t i
+    for i in range(RK_STATE_LEN):
+        key[i] = state.rng.key[i]
+    return (np.asanyarray(key), state.rng.pos)
+
+cdef object _set_state(aug_state *state, object state_info):
+    cdef uint32_t [:] key = state_info[0]
+    cdef Py_ssize_t i
+    for i in range(RK_STATE_LEN):
+        state.rng.key[i] = key[i]
+    state.rng.pos = state_info[1]
 
 # __normal_method = u'zig'
 __normal_method = u'bm'
 
+
+include "array_utilities.pxi"
+include "array_fillers.pxi"
+include "bounded_integers.pxi"
+include "aligned_malloc.pxi"
 
 cdef extern from "distributions.h":
 
@@ -105,11 +112,6 @@ cdef extern from "distributions.h":
     cdef void random_gauss_fill(aug_state* state, intptr_t count, double *out) nogil
     cdef void random_gauss_zig_julia_fill(aug_state* state, intptr_t count, double *out) nogil
 
-include "array_utilities.pxi"
-include "array_fillers.pxi"
-include "bounded_integers.pxi"
-include "aligned_malloc.pxi"
-
 cdef double kahan_sum(double *darr, np.npy_intp n):
     cdef double c, y, t, sum
     cdef np.npy_intp i
@@ -130,17 +132,51 @@ cdef object _ensure_string(object s):
 
 
 cdef class RandomState:
-    CLASS_DOCSTRING
+    """
+    RandomState(seed=None)
 
-    cdef void *rng_loc
-    cdef binomial_t binomial_info
-    cdef aug_state rng_state
-    cdef object lock
+    Container for the Mersenne Twister pseudo-random number generator.
+
+    ``mt19937.RandomState`` exposes a number of methods for generating random
+    numbers drawn from a variety of probability distributions. In addition to the
+    distribution-specific arguments, each method takes a keyword argument
+    `size` that defaults to ``None``. If `size` is ``None``, then a single
+    value is generated and returned. If `size` is an integer, then a 1-D
+    array filled with generated values is returned. If `size` is a tuple,
+    then an array with that shape is filled and returned.
+
+    **Compatibility Guarantee**
+
+    ``mt19937.RandomState`` is identical to ``numpy.random.RandomState`` and
+    makes the same compatibility guarantee. A fixed seed and a fixed series of
+    calls to ``mt19937.RandomState`` methods using the same parameters will always
+    produce the same results up to roundoff error except when the values were
+    incorrect. Incorrect values will be fixed and the version in which the fix
+    was made will be noted in the relevant docstring. Extension of existing
+    parameter ranges and the addition of new parameters is allowed as long the
+    previous behavior remains unchanged.
+
+    Parameters
+    ----------
+    seed : {None, int, array_like}, optional
+        Random seed used to initialize the pseudo-random number generator.  Can
+        be any integer between 0 and 2**32 - 1 inclusive, an array (or other
+        sequence) of such integers, or ``None`` (the default).  If `seed` is
+        ``None``, then `RandomState` will try to read data from
+        ``/dev/urandom`` (or the Windows analog) if available or seed from
+        the clock otherwise.
+
+    Notes
+    -----
+    The Python stdlib module "random" also contains a Mersenne Twister
+    pseudo-random number generator with a number of methods that are similar
+    to the ones available in ``RandomState``. ``RandomState``, besides being
+    NumPy-aware, has the advantage that it provides a much larger number
+    of probability distributions to choose from.
+    """
+
     poisson_lam_max = POISSON_LAM_MAX
     __MAXSIZE = <uint64_t>sys.maxsize
-    cdef object __seed
-    cdef object __stream
-    cdef object __version
 
     def __init__(self, seed=None):
         self.rng_state.rng = <rng_t *>PyArray_malloc_aligned(sizeof(rng_t))

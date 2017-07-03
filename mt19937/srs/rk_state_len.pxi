@@ -1,0 +1,1 @@
+DEF RK_STATE_LEN = 624
