@@ -37,6 +37,20 @@ instructor.
 $ ./launch-container.sh
 ```
 
+Leave this terminal as-is and do not exit the running docker session.
+
+Verify that your container is running by opening a separate terminal and running
+
+```bash
+$ docker ps
+CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+deadbeef            jupyter/scipy-notebook   "tini -- start-not..."   7 minutes ago       Up 7 minutes        0.0.0.0:8888->8888/tcp   cython-tutorial
+```
+
+You should see output like the above, with a different `CONTAINER ID`.
+Importantly, you should see `cython-tutorial` under the `NAMES` column.  You
+will see more than one row if you have other docker containers running.
+
 * Windows: Open up a powershell and run
 
 ```bash
@@ -62,6 +76,27 @@ execute without error or exception.
 * In a separate terminal (Mac / Linux) or powershell (Windows) window, navigate
 to this directory and run the `docker-test-xtension.sh` command (Mac / Linux)
 or the `docker-test-xtension.bat` command (Windows).
+
+* You should see output like:
+
+```bash
+$ ./docker-test-xtension.sh
+running build_ext
+building 'xtension.foo' extension
+gcc -pthread -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/opt/conda/include/python3.5m -c xtension/foo.c -o build/temp.linux-x86_64-3.5/xtension/foo.o
+gcc -pthread -shared -L/opt/conda/lib -Wl,-rpath=/opt/conda/lib,--no-as-needed build/temp.linux-x86_64-3.5/xtension/foo.o -L/opt/conda/lib -lpython3.5m -o build/lib.linux-x86_64-3.5/xtension/foo.cpython-35m-x86_64-linux-gnu.so
+copying build/lib.linux-x86_64-3.5/xtension/foo.cpython-35m-x86_64-linux-gnu.so -> xtension
+***********************************************************
+sys.executable: /opt/conda/bin/python
+cython version: 0.25.2
+xtension module test (31.415926): 31.415926
+***********************************************************
+```
+
+* If you see an error like `Error: No such container: cython-tutorial`, then
+you likely shut down the docker container before running the test.  Re-launch
+the container (`./launch-container.sh`) and in a separate terminal run the
+`docker-test-xtension.sh` script again.
 
 ## Platform-specific (non-docker) setup instructions
 
