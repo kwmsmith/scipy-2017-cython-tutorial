@@ -1,0 +1,4 @@
+build/
+*.so
+.ipynb_checkpoints/
+ng-numpy-randomstate/
