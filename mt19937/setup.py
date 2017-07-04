@@ -72,6 +72,7 @@ for rng in rngs:
     else:
         raise ValueError("what you talkin' bout, Willis?")
 
+    import pdb; pdb.set_trace()
     config = {'file_name': file_name,
               'sources': sources,
               'include_dirs': include_dirs,

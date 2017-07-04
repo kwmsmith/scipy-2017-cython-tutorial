@@ -494,6 +494,15 @@ cdef class RandomState:
                 # self.get_state())
 
     # Basic distributions:
+
+    cdef double c_random_sample(self):
+        return double_fill(&self.rng_state,
+                           &random_uniform_fill_double,
+                           None,
+                           self.lock,
+                           None)
+
+
     def random_sample(self, size=None, dtype=np.float64, out=None):
         """
         random_sample(size=None, dtype='d', out=None)
@@ -1248,6 +1257,12 @@ cdef class RandomState:
         return self.randint(low, high + 1, size=size, dtype='l')
 
 
+    cdef double c_standard_normal(self):
+        return double_fill(&self.rng_state,
+                           &random_gauss_zig_double_fill,
+                           None,
+                           self.lock,
+                           None)
 
     # Complicated, continuous distributions:
     def standard_normal(self, size=None, dtype=np.float64, method=__normal_method,

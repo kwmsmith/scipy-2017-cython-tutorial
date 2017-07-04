@@ -1,3 +1,6 @@
+#ifndef DISTRIBUTIONS_H
+#define DISTRIBUTIONS_H
+
 #include <math.h>
 #include <stdlib.h>
 
@@ -22,27 +25,7 @@ typedef int bool;
 #define M_PI 3.14159265358979323846264338328
 #endif
 
-#if  defined(RS_PCG32)
-#include "interface/pcg-32/pcg-32-shim.h"
-#elif defined(RS_PCG64)
-#include "interface/pcg-64/pcg-64-shim.h"
-#elif defined(RS_RANDOMKIT)
 #include "interface/random-kit/random-kit-shim.h"
-#elif defined(RS_XORSHIFT128)
-#include "interface/xorshift128/xorshift128-shim.h"
-#elif defined(RS_XORSHIFT1024)
-#include "interface/xorshift1024/xorshift1024-shim.h"
-#elif defined(RS_XOROSHIRO128PLUS)
-#include "interface/xoroshiro128plus/xoroshiro128plus-shim.h"
-#elif defined(RS_MRG32K3A)
-#include "interface/mrg32k3a/mrg32k3a-shim.h"
-#elif defined(RS_MLFG_1279_861)
-#include "interface/mlfg-1279-861/mlfg-1279-861-shim.h"
-#elif defined(RS_DSFMT)
-#include "interface/dSFMT/dSFMT-shim.h"
-#else
-#error Unknown RNG!!!  Unknown RNG!!!  Unknown RNG!!!
-#endif
 
 extern int64_t random_positive_int64(aug_state* state);
 
@@ -161,3 +144,5 @@ extern void random_gauss_zig_julia_fill(aug_state *state, npy_intp count, double
 extern void random_gauss_zig_float_fill(aug_state *state, npy_intp count, float *out);
 
 extern void random_gauss_zig_double_fill(aug_state *state, npy_intp count, double *out);
+
+#endif

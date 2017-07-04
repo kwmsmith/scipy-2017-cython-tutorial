@@ -20,4 +20,6 @@ cdef class RandomState:
     cdef object __stream
     cdef object __version
 
+    cdef double c_standard_normal(self)
+    cdef double c_random_sample(self)
     cdef inline _shuffle_raw(self, np.npy_intp n, np.npy_intp itemsize, np.npy_intp stride, char* data, char* buf)

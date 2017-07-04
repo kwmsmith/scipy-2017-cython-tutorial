@@ -1,3 +1,6 @@
+#ifndef RANDOM_KIT_H
+#define RANDOM_KIT_H
+
 #include <math.h>
 #ifdef _WIN32
 #include "../common/stdint.h"
@@ -30,7 +33,7 @@ extern void randomkit_seed(randomkit_state *state, uint32_t seed);
 extern void randomkit_gen(randomkit_state *state);
 
 /* Slightly optimized reference implementation of the Mersenne Twister */
-inline uint32_t randomkit_random(randomkit_state *state)
+static inline uint32_t randomkit_random(randomkit_state *state)
 {
     uint32_t y;
 
@@ -50,3 +53,5 @@ inline uint32_t randomkit_random(randomkit_state *state)
 }
 
 extern void randomkit_init_by_array(randomkit_state *state, uint32_t *init_key, int key_length);
+
+#endif
