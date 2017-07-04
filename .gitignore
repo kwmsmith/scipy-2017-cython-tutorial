@@ -1,3 +1,4 @@
+.bash_history
 *.so
 .cache/
 .ipynb_checkpoints/
