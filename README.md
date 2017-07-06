@@ -1,8 +1,26 @@
 # SciPy 2017 Cython Tutorial
 
+<img src="https://imgs.xkcd.com/comics/universal_install_script.png" />
+
 2017-06-26 NOTE: the Windows-specific instructions below are untested.  If you
 are a Windows-using tutorial-ee, please provide feedback (pull-request,
 email the author, tutorial slack channel) and corrections, thank you!
+
+# End goal
+
+We need just a few things set up for this tutorial:
+* The contents of this repository.
+* A CPython interpreter (Python 3).
+* The Cython package (version 0.25) and a few other dependencies (see
+  `requirements_conda.txt`).
+* A working C / C++ compiler.
+
+It's the last requirement that can be a challenge, depending on your platform /
+OS.  The standard GCC / clang compiler that is available on Linux / Mac
+(respectively) will work fine.  Windows can be more of a challenge.
+
+In an effort to make things more uniform, we are using a docker container that
+bundles everything together except for the contents of this repository.
 
 ## Setup Instructions
 
