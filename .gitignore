@@ -1,3 +1,4 @@
+*.egg-info/
 .bash_history
 *.so
 .cache/
