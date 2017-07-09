@@ -22,11 +22,8 @@ cdef double norm_logpdf(const double mu, const double sigma, const double* const
 
 cdef RandomState _rs = RandomState()
 
-cdef double sample_norm_v2(RandomState rs, double mu, double sigma):
+cdef double sample_norm(RandomState rs, double mu, double sigma):
     return rs.c_standard_normal() * sigma + mu
-
-cdef double sample_norm(double mu, double sigma):
-    return np.random.normal(mu, sigma)
 
 cdef bint accept_p(RandomState rs, double log_p_accept):
     return rs.c_random_sample() < cexp(log_p_accept)
@@ -56,7 +53,7 @@ def log_sampler_cy_v3(cnp.ndarray[double] data,
 
     for i in range(samples):
         # suggest new position
-        mu_proposal = sample_norm_v2(_rs, mu_current, proposal_width)
+        mu_proposal = sample_norm(_rs, mu_current, proposal_width)
 
         # Compute likelihood by adding log probabilities of each data point
         log_likelihood_current = norm_logpdf(mu_current, 1, cdata, ndata)
