@@ -1,8 +1,8 @@
 # cython: profile=True
 
 cimport cython
-from srs.mt19937 cimport RandomState
-from srs.mt19937 import RandomState
+from rng.mt19937 cimport RandomState
+from rng.mt19937 import RandomState
 from libc.math cimport log as clog, pi as cpi, exp as cexp
 import numpy as np
 cimport numpy as cnp

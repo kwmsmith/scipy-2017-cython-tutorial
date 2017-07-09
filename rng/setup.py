@@ -26,7 +26,7 @@ except ImportError:
 FORCE_EMULATION = False
 USE_SSE2 = True if '--no-sse2' not in sys.argv else False
 
-mod_dir = './srs'
+mod_dir = './rng'
 configs = []
 
 rngs = ['RNG_MT19937']
@@ -101,7 +101,7 @@ extensions = []
 
 for config in configs:
     config_file_name = mod_dir + '/' + config['file_name'] + '-config.pxi'
-    ext = Extension('srs.' + config['file_name'],
+    ext = Extension('rng.' + config['file_name'],
                     sources=config['sources'],
                     include_dirs=config['include_dirs'],
                     define_macros=config['defs'] + extra_defs,
@@ -114,7 +114,7 @@ if 'clean' in sys.argv:
     def cythonize(e, *args, **kwargs):
         return e
 else:
-    files = glob.glob('./srs/*.in')
+    files = glob.glob('./rng/*.in')
     for templated_file in files:
         output_file_name = os.path.splitext(templated_file)[0]
         if (DEVELOP and os.path.exists(output_file_name) and
@@ -127,13 +127,13 @@ else:
 
 ext_modules = cythonize(extensions, force=not DEVELOP)
 
-setup(name='srs',  # "simplified randomstate"
+setup(name='rng',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       packages=find_packages(),
-      package_dir={'srs': './srs'},
+      package_dir={'rng': './rng'},
       package_data={'': ['*.c', '*.h', '*.pxi', '*.pyx', '*.pxd'],
-                    'srs.tests.data': ['*.csv']},
+                    'rng.tests.data': ['*.csv']},
       include_package_data=True,
       license='NSCA',
       ext_modules=ext_modules)
